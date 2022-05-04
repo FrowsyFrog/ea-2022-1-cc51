@@ -1,12 +1,12 @@
-#Inspect dataset
+#Inspeccionando el dataset
 
 View(hotel_data)
 head(hotel_data, 5)
-#Identify variable names
+#Identificando los nombres de los datos
 names(hotel_data)
 
-#View the data types
+#Viendo los tipos de datos
 str(hotel_data)
 
-#Summarize each attribute
+#Obtener resumen de cada atributo
 summary(hotel_data)
