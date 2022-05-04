@@ -42,19 +42,86 @@ random.df <- function(df) {
 hotel_data_pre2 <- random.df(hotel_data_pre2)
 View(hotel_data_pre2)
 #Tranformando variables a factores
-hotel_data_pre3$hotel <- factor(hotel_data_pre3$hotel)#
-hotel_data_pre3$agent <- factor(hotel_data_pre3$agent)#
-hotel_data_pre3$is_canceled <- factor(hotel_data_pre3$is_canceled)#
-hotel_data_pre3$is_repeated_guest <- factor(hotel_data_pre3$is_repeated_guest)#
-hotel_data_pre3$arrival_date_month <- factor(hotel_data_pre3$arrival_date_month)#
-hotel_data_pre3$meal <- factor(hotel_data_pre3$meal)#
-hotel_data_pre3$country <- factor(hotel_data_pre3$country)#
-hotel_data_pre3$market_segment <- factor(hotel_data_pre3$market_segment)#
-hotel_data_pre3$distribution_channel <- factor(hotel_data_pre3$distribution_channel)#
-hotel_data_pre3$reserved_room_type <- factor(hotel_data_pre3$reserved_room_type)#
-hotel_data_pre3$assigned_room_type <- factor(hotel_data_pre3$assigned_room_type)#
-hotel_data_pre3$deposit_type <- factor(hotel_data_pre3$deposit_type)#
-hotel_data_pre3$customer_type <- factor(hotel_data_pre3$customer_type)#
-hotel_data_pre3$reservation_status <- factor(hotel_data_pre3$reservation_status)#
+hotel_data_pre2$ï..hotel <- factor(hotel_data_pre2$ï..hotel)#
+hotel_data_pre2$agent <- factor(hotel_data_pre2$agent)#
+hotel_data_pre2$is_canceled <- factor(hotel_data_pre2$is_canceled)#
+hotel_data_pre2$is_repeated_guest <- factor(hotel_data_pre2$is_repeated_guest)#
+hotel_data_pre2$arrival_date_month <- factor(hotel_data_pre2$arrival_date_month)#
+hotel_data_pre2$meal <- factor(hotel_data_pre2$meal)#
+hotel_data_pre2$country <- factor(hotel_data_pre2$country)#
+hotel_data_pre2$market_segment <- factor(hotel_data_pre2$market_segment)#
+hotel_data_pre2$distribution_channel <- factor(hotel_data_pre2$distribution_channel)#
+hotel_data_pre2$reserved_room_type <- factor(hotel_data_pre2$reserved_room_type)#
+hotel_data_pre2$assigned_room_type <- factor(hotel_data_pre2$assigned_room_type)#
+hotel_data_pre2$deposit_type <- factor(hotel_data_pre2$deposit_type)#
+hotel_data_pre2$customer_type <- factor(hotel_data_pre2$customer_type)#
+hotel_data_pre2$reservation_status <- factor(hotel_data_pre2$reservation_status)#
 
-str(hotel_data_pre3)
+str(hotel_data_pre2)
+
+View(hotel_data_pre2)
+
+#reescalar
+#normalizar
+#categorizar
+
+
+hotel_data_pre3 <- hotel_data_pre2
+rm.outliers <- function(t, x) {
+    i = grep(x,colnames(t))
+    while(length(boxplot.stats(t[,i])$out) > 1) {
+        t <- t[!t[,i] %in% boxplot.stats(t[,i])$out,]
+    }
+    return (t)
+}
+#get index of column lead_time
+
+#Lead_time es una variable, en días, que no deseamos que los valores atípicos la afecten, por la que las removemos
+boxplot(hotel_data_pre3$lead_time)
+hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "lead_time")
+boxplot(hotel_data_pre3$lead_time)
+
+boxplot(hotel_data_pre3$days_in_waiting_list)
+hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "days_in_waiting_list")
+boxplot(hotel_data_pre3$days_in_waiting_list)
+
+boxplot(hotel_data_pre3$adr)
+hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "adr")
+boxplot(hotel_data_pre3$adr)
+
+boxplot(hotel_data_pre3$stays_in_weekend_nights)
+hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "stays_in_weekend_nights")
+boxplot(hotel_data_pre3$stays_in_weekend_nights)
+
+boxplot(hotel_data_pre3$stays_in_week_nights)
+hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "stays_in_week_nights")
+boxplot(hotel_data_pre3$stays_in_week_nights)
+
+boxplot(hotel_data_pre3$adults)
+hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "adults")
+boxplot(hotel_data_pre3$adults)
+
+boxplot(hotel_data_pre3$children)
+hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "children")
+boxplot(hotel_data_pre3$children)
+
+boxplot(hotel_data_pre3$babies)
+hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "babies")
+boxplot(hotel_data_pre3$babies)
+
+#Son factores (?)
+# boxplot(hotel_data_pre3$meal)
+# hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "meal")
+
+
+boxplot(hotel_data_pre3$market_segment) #
+boxplot(hotel_data_pre3$distribution_channel) #
+boxplot(hotel_data_pre3$is_repeated_guest) #
+boxplot(hotel_data_pre3$previous_cancellations) #
+boxplot(hotel_data_pre3$previous_bookings_not_canceled) #
+boxplot(hotel_data_pre3$reserved_room_type) #
+boxplot(hotel_data_pre3$assigned_room_type) #
+boxplot(hotel_data_pre3$booking_changes) #
+boxplot(hotel_data_pre3$deposit_type) #
+boxplot(hotel_data_pre3$customer_type) #
+boxplot(hotel_data_pre3$required_car_parking_spaces) #
