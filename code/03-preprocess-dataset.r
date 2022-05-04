@@ -17,9 +17,6 @@ hotel_data_pre$reservation_status_date <- as.Date(hotel_data_pre$reservation_sta
 #Ademas, esta columna no afecta a nuestros casos de analisis
 hotel_data_pre2 <- subset(hotel_data_pre,select = -company)
 
-#Eliminando filas con valores inutilizables en la columna country(0,41% de los datos)
-hotel_data_pre2 <- hotel_data_pre2[!is.na(hotel_data_pre2$country),]
-
 #Convertir datos inutilizables de lead_time al promedio de los normales
 hotel_data_pre2$lead_time <- ifelse(is.na(hotel_data_pre2$lead_time), mean(hotel_data_pre2$lead_time, na.rm = TRUE), hotel_data_pre2$lead_time)
 #Funciones para cambiar valores NA a valores aleatorios que si existen
@@ -42,7 +39,7 @@ random.df <- function(df) {
 hotel_data_pre2 <- random.df(hotel_data_pre2)
 View(hotel_data_pre2)
 #Tranformando variables a factores
-hotel_data_pre2$ï..hotel <- factor(hotel_data_pre2$ï..hotel)#
+hotel_data_pre2$hotel <- factor(hotel_data_pre2$hotel)#
 hotel_data_pre2$agent <- factor(hotel_data_pre2$agent)#
 hotel_data_pre2$is_canceled <- factor(hotel_data_pre2$is_canceled)#
 hotel_data_pre2$is_repeated_guest <- factor(hotel_data_pre2$is_repeated_guest)#
@@ -59,14 +56,8 @@ hotel_data_pre2$reservation_status <- factor(hotel_data_pre2$reservation_status)
 
 str(hotel_data_pre2)
 
-View(hotel_data_pre2)
+#Remover outliers
 
-#reescalar
-#normalizar
-#categorizar
-
-
-hotel_data_pre3 <- hotel_data_pre2
 rm.outliers <- function(t, x) {
     i = grep(x,colnames(t))
     while(length(boxplot.stats(t[,i])$out) > 1) {
@@ -74,54 +65,35 @@ rm.outliers <- function(t, x) {
     }
     return (t)
 }
-#get index of column lead_time
 
-#Lead_time es una variable, en días, que no deseamos que los valores atípicos la afecten, por la que las removemos
-boxplot(hotel_data_pre3$lead_time)
-hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "lead_time")
-boxplot(hotel_data_pre3$lead_time)
 
-boxplot(hotel_data_pre3$days_in_waiting_list)
-hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "days_in_waiting_list")
-boxplot(hotel_data_pre3$days_in_waiting_list)
+hotel_data_pre3 <- hotel_data_pre2
 
-boxplot(hotel_data_pre3$adr)
-hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "adr")
-boxplot(hotel_data_pre3$adr)
-
-boxplot(hotel_data_pre3$stays_in_weekend_nights)
+#Removemos todos sus valores atípicos 
+boxplot(hotel_data_pre2$stays_in_weekend_nights)
 hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "stays_in_weekend_nights")
 boxplot(hotel_data_pre3$stays_in_weekend_nights)
 
-boxplot(hotel_data_pre3$stays_in_week_nights)
-hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "stays_in_week_nights")
-boxplot(hotel_data_pre3$stays_in_week_nights)
+#Estamos removiendo los outliers necesarios según nuestro criterio
+boxplot(hotel_data_pre2$adr)
+hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$adr < 1000,]
+boxplot(hotel_data_pre3$adr)
 
-boxplot(hotel_data_pre3$adults)
-hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "adults")
+boxplot(hotel_data_pre2$lead_time)
+hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$lead_time < 700,] 
+boxplot(hotel_data_pre3$lead_time)
+
+boxplot(hotel_data_pre2$adults)
+hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$adults < 10 & hotel_data_pre3$adults > 0,]
 boxplot(hotel_data_pre3$adults)
 
-boxplot(hotel_data_pre3$children)
-hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "children")
+boxplot(hotel_data_pre2$children)
+hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$children < 9,]
 boxplot(hotel_data_pre3$children)
 
 boxplot(hotel_data_pre3$babies)
-hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "babies")
+hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$babies < 8,]
 boxplot(hotel_data_pre3$babies)
 
-#Son factores (?)
-# boxplot(hotel_data_pre3$meal)
-# hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "meal")
-
-
-boxplot(hotel_data_pre3$market_segment) #
-boxplot(hotel_data_pre3$distribution_channel) #
-boxplot(hotel_data_pre3$is_repeated_guest) #
-boxplot(hotel_data_pre3$previous_cancellations) #
-boxplot(hotel_data_pre3$previous_bookings_not_canceled) #
-boxplot(hotel_data_pre3$reserved_room_type) #
-boxplot(hotel_data_pre3$assigned_room_type) #
-boxplot(hotel_data_pre3$booking_changes) #
-boxplot(hotel_data_pre3$deposit_type) #
-boxplot(hotel_data_pre3$customer_type) #
-boxplot(hotel_data_pre3$required_car_parking_spaces) #
+nrow(hotel_data_pre2) - nrow(hotel_data_pre3) 
+#Finalmente se removieron el 0.71% de los datos
