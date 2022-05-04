@@ -17,9 +17,6 @@ hotel_data_pre$reservation_status_date <- as.Date(hotel_data_pre$reservation_sta
 #Ademas, esta columna no afecta a nuestros casos de analisis
 hotel_data_pre2 <- subset(hotel_data_pre,select = -company)
 
-#Eliminando filas con valores inutilizables en la columna country(0,41% de los datos)
-hotel_data_pre2 <- hotel_data_pre2[!is.na(hotel_data_pre2$country),]
-
 #Convertir datos inutilizables de lead_time al promedio de los normales
 hotel_data_pre2$lead_time <- ifelse(is.na(hotel_data_pre2$lead_time), mean(hotel_data_pre2$lead_time, na.rm = TRUE), hotel_data_pre2$lead_time)
 #Funciones para cambiar valores NA a valores aleatorios que si existen
@@ -42,19 +39,61 @@ random.df <- function(df) {
 hotel_data_pre2 <- random.df(hotel_data_pre2)
 View(hotel_data_pre2)
 #Tranformando variables a factores
-hotel_data_pre3$hotel <- factor(hotel_data_pre3$hotel)#
-hotel_data_pre3$agent <- factor(hotel_data_pre3$agent)#
-hotel_data_pre3$is_canceled <- factor(hotel_data_pre3$is_canceled)#
-hotel_data_pre3$is_repeated_guest <- factor(hotel_data_pre3$is_repeated_guest)#
-hotel_data_pre3$arrival_date_month <- factor(hotel_data_pre3$arrival_date_month)#
-hotel_data_pre3$meal <- factor(hotel_data_pre3$meal)#
-hotel_data_pre3$country <- factor(hotel_data_pre3$country)#
-hotel_data_pre3$market_segment <- factor(hotel_data_pre3$market_segment)#
-hotel_data_pre3$distribution_channel <- factor(hotel_data_pre3$distribution_channel)#
-hotel_data_pre3$reserved_room_type <- factor(hotel_data_pre3$reserved_room_type)#
-hotel_data_pre3$assigned_room_type <- factor(hotel_data_pre3$assigned_room_type)#
-hotel_data_pre3$deposit_type <- factor(hotel_data_pre3$deposit_type)#
-hotel_data_pre3$customer_type <- factor(hotel_data_pre3$customer_type)#
-hotel_data_pre3$reservation_status <- factor(hotel_data_pre3$reservation_status)#
+hotel_data_pre2$hotel <- factor(hotel_data_pre2$hotel)#
+hotel_data_pre2$agent <- factor(hotel_data_pre2$agent)#
+hotel_data_pre2$is_canceled <- factor(hotel_data_pre2$is_canceled)#
+hotel_data_pre2$is_repeated_guest <- factor(hotel_data_pre2$is_repeated_guest)#
+hotel_data_pre2$arrival_date_month <- factor(hotel_data_pre2$arrival_date_month)#
+hotel_data_pre2$meal <- factor(hotel_data_pre2$meal)#
+hotel_data_pre2$country <- factor(hotel_data_pre2$country)#
+hotel_data_pre2$market_segment <- factor(hotel_data_pre2$market_segment)#
+hotel_data_pre2$distribution_channel <- factor(hotel_data_pre2$distribution_channel)#
+hotel_data_pre2$reserved_room_type <- factor(hotel_data_pre2$reserved_room_type)#
+hotel_data_pre2$assigned_room_type <- factor(hotel_data_pre2$assigned_room_type)#
+hotel_data_pre2$deposit_type <- factor(hotel_data_pre2$deposit_type)#
+hotel_data_pre2$customer_type <- factor(hotel_data_pre2$customer_type)#
+hotel_data_pre2$reservation_status <- factor(hotel_data_pre2$reservation_status)#
 
-str(hotel_data_pre3)
+str(hotel_data_pre2)
+
+#Remover outliers
+
+rm.outliers <- function(t, x) {
+    i = grep(x,colnames(t))
+    while(length(boxplot.stats(t[,i])$out) > 1) {
+        t <- t[!t[,i] %in% boxplot.stats(t[,i])$out,]
+    }
+    return (t)
+}
+
+
+hotel_data_pre3 <- hotel_data_pre2
+
+#Removemos todos sus valores atípicos 
+boxplot(hotel_data_pre2$stays_in_weekend_nights)
+hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "stays_in_weekend_nights")
+boxplot(hotel_data_pre3$stays_in_weekend_nights)
+
+#Estamos removiendo los outliers necesarios según nuestro criterio
+boxplot(hotel_data_pre2$adr)
+hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$adr < 1000,]
+boxplot(hotel_data_pre3$adr)
+
+boxplot(hotel_data_pre2$lead_time)
+hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$lead_time < 700,] 
+boxplot(hotel_data_pre3$lead_time)
+
+boxplot(hotel_data_pre2$adults)
+hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$adults < 10 & hotel_data_pre3$adults > 0,]
+boxplot(hotel_data_pre3$adults)
+
+boxplot(hotel_data_pre2$children)
+hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$children < 9,]
+boxplot(hotel_data_pre3$children)
+
+boxplot(hotel_data_pre3$babies)
+hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$babies < 8,]
+boxplot(hotel_data_pre3$babies)
+
+nrow(hotel_data_pre2) - nrow(hotel_data_pre3) 
+#Finalmente se removieron el 0.71% de los datos
