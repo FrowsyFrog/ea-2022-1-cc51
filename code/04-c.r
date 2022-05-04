@@ -1,11 +1,10 @@
 # ¿Cuándo es menor la demanda de reservas?
 
-library(ggplot2)
+#Ordenar categoría arrival_date_month por mes
+hotel_data_pre3$arrival_date_month <-
+    ordered(hotel_data_pre3$arrival_date_month, levels = month.name)
 
-#Ordenar categorias por mes
-hotel_data_pre3$arrival_date_month <- 
- ordered(hotel_data_pre3$arrival_date_month, levels = month.name)
-
+#Obtener gráfico de barras de la tabla de demanda de reservas por mes
 barplot(
     table(hotel_data_pre3$arrival_date_month),
     col = c("#0072B2", "#D55E00"),
