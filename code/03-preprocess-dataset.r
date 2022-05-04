@@ -37,7 +37,7 @@ random.df <- function(df) {
 }
 #Asignando valores aleatorios a los NA del dataframe
 hotel_data_pre2 <- random.df(hotel_data_pre2)
-View(hotel_data_pre2)
+#View(hotel_data_pre2)
 #Tranformando variables a factores
 hotel_data_pre2$hotel <- factor(hotel_data_pre2$hotel)#
 hotel_data_pre2$agent <- factor(hotel_data_pre2$agent)#
@@ -70,30 +70,30 @@ rm.outliers <- function(t, x) {
 hotel_data_pre3 <- hotel_data_pre2
 
 #Removemos todos sus valores atípicos 
-boxplot(hotel_data_pre2$stays_in_weekend_nights)
+#(hotel_data_pre2$stays_in_weekend_nights)
 hotel_data_pre3 <- rm.outliers(hotel_data_pre3, "stays_in_weekend_nights")
-boxplot(hotel_data_pre3$stays_in_weekend_nights)
+#boxplot(hotel_data_pre3$stays_in_weekend_nights)
 
 #Estamos removiendo los outliers necesarios según nuestro criterio
-boxplot(hotel_data_pre2$adr)
+#boxplot(hotel_data_pre2$adr)
 hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$adr < 1000,]
-boxplot(hotel_data_pre3$adr)
+#boxplot(hotel_data_pre3$adr)
 
-boxplot(hotel_data_pre2$lead_time)
+#boxplot(hotel_data_pre2$lead_time)
 hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$lead_time < 700,] 
-boxplot(hotel_data_pre3$lead_time)
+#boxplot(hotel_data_pre3$lead_time)
 
-boxplot(hotel_data_pre2$adults)
+#boxplot(hotel_data_pre2$adults)
 hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$adults < 10 & hotel_data_pre3$adults > 0,]
-boxplot(hotel_data_pre3$adults)
+#boxplot(hotel_data_pre3$adults)
 
-boxplot(hotel_data_pre2$children)
+#boxplot(hotel_data_pre2$children)
 hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$children < 9,]
-boxplot(hotel_data_pre3$children)
+#boxplot(hotel_data_pre3$children)
 
-boxplot(hotel_data_pre3$babies)
+#boxplot(hotel_data_pre3$babies)
 hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$babies < 8,]
-boxplot(hotel_data_pre3$babies)
+#boxplot(hotel_data_pre3$babies)
 
 nrow(hotel_data_pre2) - nrow(hotel_data_pre3) 
 #Finalmente se removieron el 0.71% de los datos
