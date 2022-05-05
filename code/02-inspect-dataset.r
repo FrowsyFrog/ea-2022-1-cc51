@@ -10,3 +10,5 @@ str(hotel_data)
 
 #Obtener resumen de cada atributo
 summary(hotel_data)
+
+#Los outliers y data inutilizable se visualizo en el archivo 03-preprocess-dataset

@@ -97,3 +97,5 @@ hotel_data_pre3 <- hotel_data_pre3[hotel_data_pre3$babies < 8,]
 
 nrow(hotel_data_pre2) - nrow(hotel_data_pre3) 
 #Finalmente se removieron el 0.71% de los datos
+
+write.csv(hotel_data_pre3, "data/hotel_bookings_miss_preprocesado.csv", row.names = FALSE)
