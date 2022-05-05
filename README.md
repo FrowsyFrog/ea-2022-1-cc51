@@ -19,4 +19,4 @@ El conjunto de datos original se puede encontrar en el siguiente enlace: [Hotel 
 
 ## Licencia
 
-Este proyecto analítico se encuentra balo la licencia [Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es)
+Este proyecto analítico se encuentra bajo la licencia [Atribución-NoComercial-CompartirIgual 4.0 Internacional (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es)
